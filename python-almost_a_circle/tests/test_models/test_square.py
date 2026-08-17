@@ -4,10 +4,56 @@ import unittest
 import os
 from models.base import Base
 from models.square import Square
+from models.rectangle import Rectangle
+
+
+class TestSquare_save_to_file(unittest.TestCase):
+    """Unittests for testing save_to_file method of Square class."""
+
+    def tearDown(self):
+        try:
+            os.remove("Square.json")
+        except IOError:
+            pass
+        try:
+            os.remove("Rectangle.json")
+        except IOError:
+            pass
+
+    def test_save_to_file_empty_list(self):
+        Square.save_to_file([])
+        with open("Square.json", "r") as f:
+            self.assertEqual("[]", f.read())
+
+    def test_save_to_file_empty(self):
+        Square.save_to_file([])
+        with open("Square.json", "r") as f:
+            self.assertEqual("[]", f.read())
+
+    def test_save_to_file_None(self):
+        Square.save_to_file(None)
+        with open("Square.json", "r") as f:
+            self.assertEqual("[]", f.read())
+
+    def test_save_to_file_one_square(self):
+        s = Square(1, 2, 3, 4)
+        Square.save_to_file([s])
+        with open("Square.json", "r") as f:
+            self.assertTrue(len(f.read()) > 0)
 
 
 class TestSquare(unittest.TestCase):
     """Unit tests for testing Square class."""
+
+    def tearDown(self):
+        try:
+            os.remove("Square.json")
+        except IOError:
+            pass
+        try:
+            os.remove("Rectangle.json")
+        except IOError:
+            pass
 
     def test_square_1(self):
         s = Square(1)
@@ -138,11 +184,6 @@ class TestSquare(unittest.TestCase):
             self.assertEqual(f.read(), "[]")
 
     def test_save_to_file_empty_list(self):
-        Square.save_to_file([])
-        with open("Square.json", "r") as f:
-            self.assertEqual(f.read(), "[]")
-
-    def test_save_to_file_empty_list_square(self):
         Square.save_to_file([])
         with open("Square.json", "r") as f:
             self.assertEqual(f.read(), "[]")

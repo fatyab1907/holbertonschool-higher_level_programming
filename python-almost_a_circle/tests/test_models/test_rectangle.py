@@ -6,10 +6,56 @@ import io
 import sys
 from models.base import Base
 from models.rectangle import Rectangle
+from models.square import Square
+
+
+class TestRectangle_save_to_file(unittest.TestCase):
+    """Unittests for testing save_to_file method of Rectangle class."""
+
+    def tearDown(self):
+        try:
+            os.remove("Rectangle.json")
+        except IOError:
+            pass
+        try:
+            os.remove("Square.json")
+        except IOError:
+            pass
+
+    def test_save_to_file_empty_list(self):
+        Rectangle.save_to_file([])
+        with open("Rectangle.json", "r") as f:
+            self.assertEqual("[]", f.read())
+
+    def test_save_to_file_empty(self):
+        Rectangle.save_to_file([])
+        with open("Rectangle.json", "r") as f:
+            self.assertEqual("[]", f.read())
+
+    def test_save_to_file_None(self):
+        Rectangle.save_to_file(None)
+        with open("Rectangle.json", "r") as f:
+            self.assertEqual("[]", f.read())
+
+    def test_save_to_file_one_rectangle(self):
+        r = Rectangle(1, 2, 3, 4, 5)
+        Rectangle.save_to_file([r])
+        with open("Rectangle.json", "r") as f:
+            self.assertTrue(len(f.read()) > 0)
 
 
 class TestRectangle(unittest.TestCase):
     """Unit tests for testing Rectangle class."""
+
+    def tearDown(self):
+        try:
+            os.remove("Rectangle.json")
+        except IOError:
+            pass
+        try:
+            os.remove("Square.json")
+        except IOError:
+            pass
 
     def test_rectangle_1_2(self):
         r = Rectangle(1, 2)
@@ -195,11 +241,6 @@ class TestRectangle(unittest.TestCase):
             self.assertEqual(f.read(), "[]")
 
     def test_save_to_file_empty_list(self):
-        Rectangle.save_to_file([])
-        with open("Rectangle.json", "r") as f:
-            self.assertEqual(f.read(), "[]")
-
-    def test_save_to_file_empty_list_rectangle(self):
         Rectangle.save_to_file([])
         with open("Rectangle.json", "r") as f:
             self.assertEqual(f.read(), "[]")
