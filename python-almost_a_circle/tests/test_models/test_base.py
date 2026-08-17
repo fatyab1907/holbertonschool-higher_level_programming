@@ -1,11 +1,12 @@
 #!/usr/bin/python3
 """Unittests for Base class."""
 import unittest
+import os
 from models.base import Base
 
 
 class TestBase(unittest.TestCase):
-    """Unit tests for testing Base."""
+    """Unit tests for Base class."""
 
     def test_id_auto(self):
         b1 = Base()
