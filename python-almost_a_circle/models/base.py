@@ -18,47 +18,7 @@ class Base:
 
     @staticmethod
     def to_json_string(list_dictionaries):
-        """Return JSON string representation."""
+        """Return the JSON string representation of list_dictionaries."""
         if list_dictionaries is None or len(list_dictionaries) == 0:
             return "[]"
         return json.dumps(list_dictionaries)
-
-    @classmethod
-    def save_to_file(cls, list_objs):
-        """Write JSON string representation of list_objs to a file."""
-        filename = f"{cls.__name__}.json"
-        with open(filename, "w", encoding="utf-8") as f:
-            if list_objs is None:
-                f.write("[]")
-            else:
-                list_dicts = [o.to_dictionary() for o in list_objs]
-                f.write(cls.to_json_string(list_dicts))
-
-    @staticmethod
-    def from_json_string(json_string):
-        """Return list of JSON string representation."""
-        if json_string is None or json_string == "":
-            return []
-        return json.loads(json_string)
-
-    @classmethod
-    def create(cls, **dictionary):
-        """Return an instance with all attributes set."""
-        if dictionary and dictionary != {}:
-            if cls.__name__ == "Rectangle":
-                dummy = cls(1, 1)
-            else:
-                dummy = cls(1)
-            dummy.update(**dictionary)
-            return dummy
-
-    @classmethod
-    def load_from_file(cls):
-        """Return a list of instances."""
-        filename = f"{cls.__name__}.json"
-        try:
-            with open(filename, "r", encoding="utf-8") as f:
-                list_dicts = cls.from_json_string(f.read())
-                return [cls.create(**d) for d in list_dicts]
-        except IOError:
-            return []
