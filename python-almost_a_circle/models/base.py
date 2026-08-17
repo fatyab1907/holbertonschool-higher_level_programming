@@ -25,7 +25,7 @@ class Base:
 
     @classmethod
     def save_to_file(cls, list_objs):
-        """Write the JSON string representation of list_objs to a file."""
+        """Write JSON string representation of list_objs to a file."""
         filename = f"{cls.__name__}.json"
         if list_objs is None:
             list_dicts = []
@@ -38,7 +38,18 @@ class Base:
 
     @staticmethod
     def from_json_string(json_string):
-        """Return the list of the JSON string representation json_string."""
+        """Return the list of JSON string representation json_string."""
         if json_string is None or len(json_string) == 0:
             return []
         return json.loads(json_string)
+
+    @classmethod
+    def create(cls, **dictionary):
+        """Return an instance with all attributes already set."""
+        if dictionary and dictionary != {}:
+            if cls.__name__ == "Rectangle":
+                dummy = cls(1, 1)
+            elif cls.__name__ == "Square":
+                dummy = cls(1)
+            dummy.update(**dictionary)
+            return dummy
