@@ -2,8 +2,6 @@
 """Unittests for Base class."""
 import unittest
 from models.base import Base
-from models.rectangle import Rectangle
-from models.square import Square
 
 
 class TestBase(unittest.TestCase):
@@ -24,11 +22,17 @@ class TestBase(unittest.TestCase):
     def test_to_json_string_empty(self):
         self.assertEqual(Base.to_json_string([]), "[]")
 
+    def test_to_json_string_valid(self):
+        self.assertEqual(Base.to_json_string([{'id': 12}]), '[{"id": 12}]')
+
     def test_from_json_string_none(self):
         self.assertEqual(Base.from_json_string(None), [])
 
     def test_from_json_string_empty(self):
         self.assertEqual(Base.from_json_string("[]"), [])
+
+    def test_from_json_string_valid(self):
+        self.assertEqual(Base.from_json_string('[{"id": 12}]'), [{'id': 12}])
 
 
 if __name__ == "__main__":
