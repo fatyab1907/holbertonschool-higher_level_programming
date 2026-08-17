@@ -8,11 +8,33 @@ from models.square import Square
 class TestSquare(unittest.TestCase):
     """Unit tests for testing Square class."""
 
-    def test_square_init(self):
-        s1 = Square(1)
-        s2 = Square(1, 2)
-        s3 = Square(1, 2, 3)
-        s4 = Square(1, 2, 3, 4)
+    def test_square_1(self):
+        s = Square(1)
+        self.assertEqual(s.size, 1)
+        self.assertEqual(s.x, 0)
+        self.assertEqual(s.y, 0)
+        self.assertIsNotNone(s.id)
+
+    def test_square_1_2(self):
+        s = Square(1, 2)
+        self.assertEqual(s.size, 1)
+        self.assertEqual(s.x, 2)
+        self.assertEqual(s.y, 0)
+        self.assertIsNotNone(s.id)
+
+    def test_square_1_2_3(self):
+        s = Square(1, 2, 3)
+        self.assertEqual(s.size, 1)
+        self.assertEqual(s.x, 2)
+        self.assertEqual(s.y, 3)
+        self.assertIsNotNone(s.id)
+
+    def test_square_1_2_3_4(self):
+        s = Square(1, 2, 3, 4)
+        self.assertEqual(s.size, 1)
+        self.assertEqual(s.x, 2)
+        self.assertEqual(s.y, 3)
+        self.assertEqual(s.id, 4)
 
     def test_invalid_types(self):
         with self.assertRaises(TypeError):
@@ -73,13 +95,20 @@ class TestSquare(unittest.TestCase):
         s4 = Square.create(**{'id': 89, 'size': 1, 'x': 2, 'y': 3})
         self.assertEqual(s4.y, 3)
 
-    def test_save_to_file(self):
+    def test_save_to_file_none(self):
         Square.save_to_file(None)
-        self.assertTrue(os.path.exists("Square.json"))
+        with open("Square.json", "r") as f:
+            self.assertEqual(f.read(), "[]")
+
+    def test_save_to_file_empty(self):
         Square.save_to_file([])
-        self.assertTrue(os.path.exists("Square.json"))
-        Square.save_to_file([Square(1)])
-        self.assertTrue(os.path.exists("Square.json"))
+        with open("Square.json", "r") as f:
+            self.assertEqual(f.read(), "[]")
+
+    def test_save_to_file_valid(self):
+        Square.save_to_file([Square(1, 0, 0, 1)])
+        with open("Square.json", "r") as f:
+            self.assertEqual(f.read(), '[{"id": 1, "size": 1, "x": 0, "y": 0}]')
 
     def test_load_from_file(self):
         if os.path.exists("Square.json"):
